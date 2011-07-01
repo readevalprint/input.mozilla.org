@@ -58,16 +58,16 @@ class PaginationTest(SphinxTestCase):
         doc = pq(r.content)
         self.assertNotEqual(firstmsg, doc('.message').eq(1).text())
 
-    def test_next_page(self):
+    def test_older_page(self):
         r = search_request()
-        assert pq(r.content)('.pager a.newer')
+        assert pq(r.content)('.pager a.older')
 
-    def test_no_next_page(self):
+    def test_no_older_page(self):
         """Once we're on page 50, let's not show an older messages link."""
         for page in (50, 51, 100, 200):
             r = search_request(page=page)
             doc = pq(r.content)
-            assert not doc('.pager a.next')
+            assert not doc('.pager a.older')
 
     def test_page_0(self):
         """In bug 620296, page 0 led to an AssertionError."""
