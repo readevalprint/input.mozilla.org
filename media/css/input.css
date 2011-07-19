@@ -78,7 +78,9 @@ h2 {
     width: 74.47%;
 }
 
-
+.ltor {
+    direction: ltr;
+}
 a {
     color: #4497c7;
     text-decoration: none;

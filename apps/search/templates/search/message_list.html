@@ -7,7 +7,7 @@
         <span>{{ opinion.type.pretty }}</span>
       </h3>
       
-      <p class="body">{{ opinion.description }}</p>
+      <p class="body{% if opinion.locale not in settings.RTL_LANGUAGES %} ltor{% endif %}">{{ opinion.description }}</p>
       
       <ul class="meta">
         <li>
@@ -16,7 +16,7 @@
           </a>
         </li>
         <li><a href="{{ search_url(platform=opinion.platform, defaults=defaults) }}">{{ platform_name(opinion.platform) }}{% if opinion.device %} ({{ opinion.device }}){% endif %}</a></li>
-        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}</a></li>
+        <li><a href="{{ search_url(locale=opinion.locale, defaults=defaults) }}">{{ locale_name(opinion.locale) }}{% if opinion.locale not in settings.RTL_LANGUAGES %}&lrm;{% endif %}</a></li>
         {% if opinion.url %}
           <li><a href="{{ opinion.url }}" rel="nofollow">{{ opinion.url|strip_protocol }}</a></li>
         {% endif %}
