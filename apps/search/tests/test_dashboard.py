@@ -53,7 +53,7 @@ class TestDashboard(SphinxTestCase):
         r = self.client.get(reverse('search'))
         doc = pq(r.content)
 
-        pag_link = doc('.pager a.newer')
+        pag_link = doc('.pager a.older')
         eq_(len(pag_link), 1)
         assert pag_link.attr('href').endswith(
             '?product=firefox&version=%s&page=2' % (
