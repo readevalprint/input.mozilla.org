@@ -1,4 +1,5 @@
 from django.contrib.admin import options, actions, sites
+from django.contrib.auth import views as auth_views
 from django.template import loader
 
 import jingo
@@ -20,4 +21,4 @@ def django_to_jinja(template_name, context, **kw):
 actions.render_to_response = django_to_jinja
 options.render_to_response = django_to_jinja
 sites.render_to_response = django_to_jinja
-
+auth_views.render_to_response = django_to_jinja
