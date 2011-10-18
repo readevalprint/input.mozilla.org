@@ -9,6 +9,8 @@ var input_chart; // Highcharts wants this to be global.
             if (!chart_div.length) return;
 
             var chart_data = JSON.parse(chart_div.attr('data-chart-config'));
+            var colors = {Praise: '#72B53E', Issue: '#BD5653', Ideas: '#EDD860'};
+            var final_colors = [];
             // Store the previous x-axis label to prevent duplicates
             var previous_label;
             var tooltip_fmt = chart_div.attr('data-tooltip');
@@ -18,10 +20,13 @@ var input_chart; // Highcharts wants this to be global.
             if (x_categories) {
                 options.xAxis = {categories: JSON.parse(x_categories)};
             }
-
+            // Build an array of colors depending of what graphs will be shown
+            $.each(chart_data.series, function(k, v) {
+                final_colors.push(colors[v.name]);
+            });
 
             input_chart = new Highcharts.Chart({
-                colors: options.colors || ['#72B53E', '#BD5653', '#edd860'],
+                colors: options.colors || final_colors,
                 chart: {
                     renderTo: chart_id,
                     defaultSeriesType: options.type || 'line',
