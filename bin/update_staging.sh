@@ -26,7 +26,8 @@ pushd vendor > /dev/null
 $GIT fetch origin
 NEWCODE=$($GIT log origin/master..master|wc -l)
 $GIT pull -q origin master
-$GIT submodule update --init
+$GIT submodule sync
+$GIT submodule update --init  --recursive
 popd > /dev/null
 
 #if [ "$NEWCODE" -gt 0 ]

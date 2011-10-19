@@ -18,7 +18,8 @@ popd > /dev/null
 echo -e "Updating vendor..."
 cd $VENDOR_DIR
 git pull
-git submodule update --init
+git submodule sync
+git submodule update --init --recursive
 
 echo -e "Updating reporter..."
 cd $INPUT_DIR
