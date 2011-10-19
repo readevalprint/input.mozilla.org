@@ -43,7 +43,7 @@
       </p>
       <ul class="meta">
         <li><a href="{{ sites_url(url=site.url) }}">
-          {% trans num=site.size, count=site.size|numberfmt %}
+          {% trans count=site.size|numberfmt %}
             {{ count }} message
           {% pluralize %}
             {{ count }} messages
