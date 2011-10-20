@@ -12,6 +12,7 @@ pushd "$HERE/../" > /dev/null
 
 # update locales
 pushd locale > /dev/null
+$SVN cleanup
 $SVN revert -R .
 $SVN up
 ./compile-mo.sh .
