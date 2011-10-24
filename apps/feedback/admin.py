@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Opinion, Term
+from .models import Opinion, Term, VersionCount
 
 
 class OpinionAdmin(admin.ModelAdmin):
@@ -40,3 +40,12 @@ class TermAdmin(admin.ModelAdmin):
     list_filter = ('hidden',)
     search_fields = ['term']
 admin.site.register(Term, TermAdmin)
+
+
+class VersionCountAdmin(admin.ModelAdmin):
+    list_display = ('product', 'version', 'num_opinions', 'active')
+    ordering = ('-version', 'product')
+    readonly_fields = ('product', 'version', 'num_opinions', 'version_int')
+    search_fields = ['version']
+
+admin.site.register(VersionCount, VersionCountAdmin)
