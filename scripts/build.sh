@@ -41,7 +41,7 @@ LOG_LEVEL = logging.ERROR
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'sm-hudson01',
+        'HOST': 'localhost',
         'NAME': 'input_$1',
         'USER': 'hudson',
         'PASSWORD': '',
@@ -52,7 +52,7 @@ DATABASES = {
     },
     'website_issues': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'sm-hudson01',
+        'HOST': 'localhost',
         'NAME': 'input_ws_$1',
         'USER': 'hudson',
         'PASSWORD': '',
