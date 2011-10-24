@@ -347,3 +347,7 @@ ES_DISABLED = True
 # (good for testing)
 ENFORCE_USER_AGENT = True
 DISABLE_TERMS = False
+
+# Minnum of opinions in the last 30 days for version to be shown in dashboard
+DASHBOARD_THRESHOLD = 800
+DASHBOARD_THRESHOLD_MOBILE = 120

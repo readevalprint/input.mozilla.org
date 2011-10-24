@@ -9,6 +9,7 @@ import commonware
 from elasticutils import es_required
 from pyes import djangoutils
 from pyes.exceptions import NotFoundException as PyesNotFoundException
+from product_details.version_compare import Version
 
 from feedback import query, utils
 from feedback.utils import ua_parse, extract_terms, smart_truncate
@@ -212,3 +213,29 @@ class Term(ModelBase):
 
     class Meta:
         ordering = ('term',)
+
+
+class VersionCount(ModelBase):
+    """Denormalized model built from product info and opinion counts.
+    
+    Built from products, versions, number of opinions, and active status.
+    """
+
+    product = models.PositiveSmallIntegerField(db_index=True)
+    version = models.CharField(max_length=30, db_index=True)
+    version_int = models.BigIntegerField(db_index=True)
+    num_opinions = models.IntegerField()
+    active = models.BooleanField(db_index=True)
+
+    class Meta:
+        unique_together = (('product', 'version'))
+        db_table = 'version_count'
+
+
+def update_version_int(sender, instance, **kwargs):
+    if not instance.pk:
+        v = Version(instance.version)
+        instance.version_int = v._version_int
+
+
+signals.pre_save.connect(update_version_int, sender=VersionCount)

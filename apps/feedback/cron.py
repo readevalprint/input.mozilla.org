@@ -1,13 +1,15 @@
 import datetime
 import random
+import logging
 
 from django.conf import settings
 from django.db import transaction, models
 
 import cronjobs
+from product_details.version_compare import Version
 
 import input
-from feedback.models import Opinion, extract_terms
+from feedback.models import Opinion, VersionCount, extract_terms
 
 
 DEFAULT_NUM_OPINIONS = 100
@@ -51,6 +53,7 @@ UA_STRINGS = {'mobile': ['Mozilla/5.0 (Android; Linux armv71; rv:2.0b6pre)'
 DEVICES = dict(Samsung='Epic Vibrant Transform'.split(),
                HTC='Evo Hero'.split(),
                Motorola='DroidX Droid2'.split())
+logger = logging.getLogger(__name__)
 
 
 @cronjobs.register
@@ -91,3 +94,25 @@ def populate(num_opinions=None, product='mobile', type=None, locale=None):
 
     models.signals.post_save.connect(extract_terms, sender=Opinion,
                                      dispatch_uid='extract_terms')
+
+
+@cronjobs.register
+def version_counter():
+    """Cron to activate and deactivate product versions."""
+    thirtydaysago = datetime.datetime.now() - datetime.timedelta(30)
+    versions = (Opinion.objects.filter(created__gte=(thirtydaysago))
+                       .values('product', 'version')
+                       .annotate(count=models.Count('id')))
+    logger.debug("Found %d versions" % (len(versions)))
+    for version in versions:
+        vc, created = VersionCount.objects.get_or_create(
+                product=version['product'], version=version['version'],
+                defaults={'num_opinions': version['count']})
+        if not created:
+            vc.num_opinions = version['count']
+        if vc.product == input.FIREFOX.id:
+            vc.active = (vc.num_opinions >= settings.DASHBOARD_THRESHOLD)
+        else:
+            vc.active = (
+                vc.num_opinions >= settings.DASHBOARD_THRESHOLD_MOBILE)
+        vc.save()
