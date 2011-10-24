@@ -32,7 +32,7 @@ popd
 source $VENV/bin/activate
 
 pip install -q -r requirements/compiled.txt
-pip install -q -r coverage
+pip install -q coverage
 
 cat > settings_local.py <<SETTINGS
 from settings import *
