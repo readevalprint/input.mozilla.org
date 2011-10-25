@@ -44,6 +44,7 @@ admin.site.register(Term, TermAdmin)
 
 class VersionCountAdmin(admin.ModelAdmin):
     list_display = ('product', 'version', 'num_opinions', 'active')
+    list_filter = ('active', 'product')
     ordering = ('-version', 'product')
     readonly_fields = ('product', 'version', 'num_opinions', 'version_int')
     search_fields = ['version']
