@@ -6,10 +6,10 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.shortcuts import render
 from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
-import jingo
 from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
@@ -213,8 +213,8 @@ def index(request):
         (results, form, product, version, metas, type_filter) = _get_results(
                 request, meta=meta)
     except SearchError, e:
-        return jingo.render(request, 'search/unavailable.html',
-                           {'search_error': e}, status=500)
+        return render(request, 'search/unavailable.html', {'search_error': e},
+                      status=500)
 
     page = form.data.get('page', 1)
 
@@ -282,4 +282,4 @@ def index(request):
     data['defaults'] = get_defaults(form)
     template = 'search/%ssearch.html' % (
         'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template, data)
+    return render(request, template, data)

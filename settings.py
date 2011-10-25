@@ -139,9 +139,9 @@ TEMPLATE_DIRS = (path('templates'),)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
+    'jingo.Loader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -239,6 +239,8 @@ def JINJA_CONFIG():
                              'jinja2.ext.with_', 'caching.ext.cache'],
               'finalize': lambda x: x if x is not None else ''}
     return config
+
+JINGO_EXCLUDE_APPS = ['debug_toolbar', 'admin']
 
 MIDDLEWARE_CLASSES = (
     'input.middleware.MobileSiteMiddleware',

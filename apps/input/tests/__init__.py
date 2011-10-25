@@ -32,7 +32,7 @@ def enforce_ua(f):
 def render(s, context={}):
     """Render a Jinja2 template fragment."""
     t = jingo.env.from_string(s)
-    return t.render(**context)
+    return t.render(context)
 
 
 class InputTestCase(test_utils.TestCase):

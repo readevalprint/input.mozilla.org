@@ -10,14 +10,9 @@ from pyquery import PyQuery as pq
 
 import input
 from feedback.cron import populate
-from input.tests import InputTestCase
+from input.tests import InputTestCase, render
 from input.urlresolvers import reverse
 from search.tests import SphinxTestCase
-
-
-def render(s, context={}):
-    t = jingo.env.from_string(s)
-    return t.render(**context)
 
 
 def render_template(template, context):
