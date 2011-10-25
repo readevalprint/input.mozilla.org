@@ -217,11 +217,12 @@ class Term(ModelBase):
 
 class VersionCount(ModelBase):
     """Denormalized model built from product info and opinion counts.
-    
+
     Built from products, versions, number of opinions, and active status.
     """
 
-    product = models.PositiveSmallIntegerField(db_index=True)
+    product = models.PositiveSmallIntegerField(db_index=True,
+        choices=((prod, PRODUCT_IDS[prod].pretty) for prod in PRODUCT_IDS))
     version = models.CharField(max_length=30, db_index=True)
     version_int = models.BigIntegerField(db_index=True)
     num_opinions = models.IntegerField()
