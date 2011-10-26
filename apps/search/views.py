@@ -13,12 +13,13 @@ import jingo
 from product_details.version_compare import Version
 from tower import ugettext as _, ugettext_lazy as _lazy
 
-from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, LATEST_BETAS,
+from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_BETAS,
                    OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA, OPINION_TYPES)
 from input.decorators import cache_page, forward_mobile
 from input.urlresolvers import reverse
+from feedback.models import VersionCount
 from search.client import Client, SearchError
-from search.forms import ReporterSearchForm, PROD_CHOICES, VERSION_CHOICES
+from search.forms import ReporterSearchForm, PROD_CHOICES
 
 log = commonware.log.getLogger('i.search')
 
@@ -194,6 +195,17 @@ def index(request):
     "Dashboard" (i.e. the home page of Firefox Input). Otherwise, the title
     of the page is "Search Results".
     """
+
+    VERSIONS = VersionCount.objects.filter(active=1)
+
+    VERSION_CHOICES = {
+        FIREFOX: ([('--', _lazy(u'-- all --', 'version_choice'))] +
+                  [(v.version, v.version) for v in VERSIONS
+                  if v.product == FIREFOX.id]),
+        MOBILE: ([('--', _lazy(u'-- all --', 'version_choice'))] +
+                 [(v.version, v.version) for v in VERSIONS
+                 if v.product == MOBILE.id]),
+    }
 
     try:
         meta = ('type', 'locale', 'platform', 'day_sentiment', 'manufacturer',

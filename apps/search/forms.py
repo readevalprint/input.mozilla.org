@@ -11,22 +11,22 @@ from tower import ugettext_lazy as _lazy
 from input import (FIREFOX, MOBILE, PLATFORM_USAGE, LATEST_BETAS,
                    KNOWN_DEVICES, KNOWN_MANUFACTURERS)
 from input.fields import DateInput, SearchInput
-
+from feedback.models import VersionCount
 
 PROD_CHOICES = (
     (FIREFOX.short, FIREFOX.pretty),
     (MOBILE.short, MOBILE.pretty),
 )
 
+VERSIONS = VersionCount.objects.filter(active=1)
+
 VERSION_CHOICES = {
     FIREFOX: ([('--', _lazy(u'-- all --', 'version_choice'))] +
-              [(v, v) for v in (FIREFOX.extra_versions +
-                                FIREFOX.release_versions +
-                                FIREFOX.beta_versions)]),
+              [(v.version, v.version) for v in VERSIONS
+              if v.product == FIREFOX.id]),
     MOBILE: ([('--', _lazy(u'-- all --', 'version_choice'))] +
-             [(v, v) for v in (MOBILE.extra_versions +
-                               MOBILE.release_versions +
-                               MOBILE.beta_versions)]),
+             [(v.version, v.version) for v in VERSIONS
+             if v.product == MOBILE.id]),
 }
 
 SENTIMENT_CHOICES = [('', _lazy('-- all --', 'sentiment_choice')),
