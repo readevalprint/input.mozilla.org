@@ -231,6 +231,7 @@ class VersionCount(ModelBase):
     class Meta:
         unique_together = (('product', 'version'))
         db_table = 'version_count'
+        ordering = ['-version_int']
 
 
 def update_version_int(sender, instance, **kwargs):
