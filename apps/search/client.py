@@ -105,6 +105,7 @@ class Client(object):
 
     def __init__(self):
         self.sphinx = sphinx.SphinxClient()
+        self.sphinx.SetMatchMode(sphinx.SPH_MATCH_BOOLEAN)
 
         if os.environ.get('DJANGO_ENVIRONMENT') == 'test':
             self.sphinx.SetServer(settings.SPHINX_HOST,
@@ -176,6 +177,7 @@ class Client(object):
     def query(self, term, limit=20, offset=0, **kwargs):
         """Submits formatted query, retrieves ids, returns Opinions."""
         sc = self.sphinx
+
         term = sanitize_query(term)
 
         # Extract and apply various filters.

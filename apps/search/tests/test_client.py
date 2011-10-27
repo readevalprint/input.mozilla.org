@@ -99,6 +99,13 @@ class SearchTest(SphinxTestCase):
         start = datetime.datetime(2010, 5, 27)
         eq_(num_results('url:*', date_start=start), 7)
 
+    def test_or_query(self):
+        """Sphinx supports or queries, e.g.: a | b."""
+        start = datetime.datetime(2010, 5, 27)
+        eq_(num_results('1st', date_start=start), 1)
+        eq_(num_results('2nd', date_start=start), 1)
+        eq_(num_results('1st | 2nd', date_start=start), 2)
+
 
 def test_date_filter_timezone():
     """Ensure date filters are applied in app time (= PST), not UTC."""
