@@ -11,6 +11,7 @@ from operator import itemgetter
 from django.conf import settings
 
 from product_details import product_details
+from statsd import statsd
 from tower import ugettext as _
 
 from input import (KNOWN_DEVICES, KNOWN_MANUFACTURERS, OPINION_PRAISE,
@@ -213,9 +214,11 @@ class Client(object):
         try:
             results = sc.RunQueries()
         except socket.timeout:
+            statsd.incr('sphinx.errors.timeout')
             raise SearchError(_("Query has timed out."))
         except Exception, e:
             # L10n: Sphinx is the name of the search engine software.
+            statsd.incr('sphinx.errors.unknown')
             raise SearchError(_("Sphinx threw an unknown exception: %s") % e)
 
         if sc.GetLastError():

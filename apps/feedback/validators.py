@@ -6,6 +6,7 @@ from django.core import validators
 from django.utils.html import strip_tags
 
 from product_details import product_details
+from statsd import statsd
 from tower import ugettext as _
 
 import swearwords
@@ -34,6 +35,9 @@ def validate_swearwords(str):
     """Soft swear word filter to encourage contructive feedback."""
     matches = swearwords.find_swearwords(str)
     if matches:
+        statsd.incr('swearing.total')
+        for match in matches:
+            statsd.incr('swearing.%s' % match)
         # L10n: "Swear words" are cuss words/offensive words.
         raise ValidationError(
             _('Your comment contains swear words (%s). In order to help us '

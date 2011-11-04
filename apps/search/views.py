@@ -11,6 +11,7 @@ from django.utils.feedgenerator import Atom1Feed
 
 import commonware.log
 from product_details.version_compare import Version
+from statsd import statsd
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from input import (PRODUCTS, PRODUCT_IDS, FIREFOX, MOBILE, LATEST_BETAS,
@@ -217,6 +218,10 @@ def index(request):
                       status=500)
 
     page = form.data.get('page', 1)
+
+    # Are people going past the first page?
+    if page > 1:
+        statsd.incr('search.paginating')
 
     # Get the desktop site's absolute URL for use in the settings tab
     desktop_site = Site.objects.get(id=settings.DESKTOP_SITE_ID)
