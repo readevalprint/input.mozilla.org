@@ -15,7 +15,8 @@ def get_highcharts():
     localfilename = os.path.join(settings.MEDIA_ROOT, 'js', 'libs',
                                  'highcharts.src.js')
     u = urllib2.urlopen('https://raw.github.com/highslide-software/'
-                        'highcharts.com/master/js/highcharts.src.js')
+                        'highcharts.com/11c76bd017528e1db2a2843e648'
+                        '2856d1ed0f7d4/js/highcharts.src.js')
     with open(localfilename, 'w') as f:
         f.write(u.read())
 
