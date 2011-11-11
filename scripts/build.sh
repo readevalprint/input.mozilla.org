@@ -1,3 +1,5 @@
+# Jenkins build script.
+
 cd $WORKSPACE
 VENV=$WORKSPACE/venv
 
@@ -37,6 +39,7 @@ pip install -q coverage
 cat > settings_local.py <<SETTINGS
 from settings import *
 ROOT_URLCONF = '%s.urls' % ROOT_PACKAGE
+SECRET_KEY = 'BONGO'
 LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
 DATABASES = {
