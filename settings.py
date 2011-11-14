@@ -186,9 +186,6 @@ BROKER_USER = "guest"
 BROKER_PASSWORD = "guest"
 CELERY_IMPORTS = ('django_arecibo.tasks',)
 
-import djcelery
-djcelery.setup_loader()
-
 ## API
 TSV_EXPORT_DIR = path('media/data')
 
