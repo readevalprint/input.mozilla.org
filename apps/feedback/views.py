@@ -2,13 +2,12 @@ from functools import wraps
 
 from django import http
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.vary import vary_on_headers
 
 import jingo
 from product_details.version_compare import Version
+from session_csrf import anonymous_csrf_exempt
 from tower import ugettext as _
 
 import input
@@ -58,7 +57,7 @@ def enforce_ua(f):
 @forward_mobile
 @enforce_ua
 @never_cache
-@csrf_exempt
+@anonymous_csrf_exempt
 def feedback(request, ua):
     """Page to receive feedback under happy/sad/idea categories"""
 
@@ -92,9 +91,7 @@ def feedback(request, ua):
 
     template = 'feedback/%sindex.html' % (
         'mobile/' if request.mobile_site else '')
-    return jingo.render(request, template,
-                        {'forms': forms,
-                         'post_url': reverse('feedback')})
+    return render(request, template, {'forms': forms})
 
 
 @cache_page
