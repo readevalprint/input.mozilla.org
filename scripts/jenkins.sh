@@ -36,7 +36,7 @@ source $VENV/bin/activate
 pip install -q -r requirements/compiled.txt
 pip install -q coverage
 
-cat > settings_local.py <<SETTINGS
+cat > settings/local.py <<SETTINGS
 from settings import *
 ROOT_URLCONF = '%s.urls' % ROOT_PACKAGE
 SECRET_KEY = 'BONGO'
