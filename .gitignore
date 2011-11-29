@@ -17,3 +17,4 @@ media/js/libs/highcharts.src.js
 .#*
 locale
 docs/_build
+settings/local.py
