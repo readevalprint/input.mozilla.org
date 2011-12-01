@@ -145,6 +145,9 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.messages',
 ]
 
+# Removed because this breaks the one user we have for admin.
+INSTALLED_APPS.remove('django_sha2')
+
 # Where to store product details
 PROD_DETAILS_DIR = path('lib/product_details_json')
 
