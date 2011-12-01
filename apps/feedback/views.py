@@ -120,7 +120,7 @@ def thanks(request):
 @forward_mobile
 @cache_page
 def opinion_detail(request, id):
-    o = get_object_or_404(Opinion, pk=id)
+    o = get_object_or_404(Opinion, pk=id, _type__in=input.OPINION_TYPES.keys())
 
     if not request.mobile_site:
         template = 'feedback/opinion.html'
