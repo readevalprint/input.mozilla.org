@@ -17,7 +17,7 @@ def index_all():
     other than to initially seed Elastic Search.
     """
     ids = (Opinion.objects
-           .filter(_type__in=[i.id for i in input.OPINION_USAGE])
+           .filter(_type__in=[i.id for i in input.OPINION_TYPES_USAGE])
            .values_list('id', flat=True))
     with establish_connection() as conn:
         for chunk in chunked(ids, 1000):

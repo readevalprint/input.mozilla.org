@@ -45,7 +45,7 @@ def cluster_by_product(qs):
 
 def cluster_by_feeling(qs, prod):
     """Cluster all products by feeling."""
-    for opinion_type in input.OPINION_USAGE:
+    for opinion_type in input.OPINION_TYPES_USAGE:
         type_qs = qs.filter(_type=opinion_type.id)
 
         cluster_by_platform(type_qs, prod, opinion_type.short)
