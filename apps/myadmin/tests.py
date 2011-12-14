@@ -27,7 +27,9 @@ class ViewTestCase(test_utils.TestCase):
     def test_logged_out(self):
         self.client.logout()
         r = self.client.get(reverse('myadmin.settings'))
-        eq_(r.status_code, 200)
+        eq_(r.status_code, 302)
+        expect = reverse('login') + '?next=' + reverse('myadmin.settings')
+        assert r['Location'].endswith(expect)
 
     def test_recluster(self):
         r = self.client.get(reverse('myadmin.recluster'))
