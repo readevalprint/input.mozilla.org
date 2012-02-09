@@ -139,6 +139,8 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 
     'annoying',
     'cronjobs',
+    'haystack',  # for search
+    'celery_haystack',  # for lazy indexing
 
     'django.contrib.admin',
     'django.contrib.sites',
@@ -208,3 +210,11 @@ DISABLE_TERMS = False
 DASHBOARD_THRESHOLD = 800
 DASHBOARD_THRESHOLD_MOBILE = 120
 SESSION_COOKIE_SECURE = True
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'input',
+    },
+}

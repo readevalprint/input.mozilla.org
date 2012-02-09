@@ -41,3 +41,7 @@ django-celery
 
 # Sphinx API
 -e git://github.com/jsocol/sphinxapi.git#egg=sphinxapi
+
+# ElasticSearch
+haystack
+requests

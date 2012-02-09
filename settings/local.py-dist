@@ -43,3 +43,8 @@ STATSD_HOST = 'localhost'
 STATSD_PORT = 8125
 STATSD_PREFIX = 'input'
 SESSION_COOKIE_SECURE = False
+
+# change this to the elasticsearch host
+HAYSTACK_CONNECTIONS['default']['URL'] = 'http://127.0.0.1:9200/'
+# append -dev, -stage if sharing with other environments, otherwise leave as is
+# HAYSTACK_CONNECTIONS['default']['INDEX_NAME'] = 'input'
