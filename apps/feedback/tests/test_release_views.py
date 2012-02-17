@@ -1,4 +1,3 @@
-from nose import SkipTest
 from nose.tools import eq_
 
 from input import FIREFOX, LATEST_RELEASE
@@ -21,13 +20,6 @@ class ReleaseTests(ViewTestCase):
         r = self._get_page()
         eq_(r.status_code, 302)
         assert r['Location'].endswith(reverse('feedback.download'))
-
-    @enforce_ua
-    def test_beta(self):
-        """Beta version on release page: redirect."""
-        raise SkipTest
-        r = self._get_page('3.6b2')
-        self.assertRedirects(r, reverse('feedback'), 302, 302)
 
     # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
