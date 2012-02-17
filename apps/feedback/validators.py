@@ -9,8 +9,6 @@ from product_details import product_details
 from statsd import statsd
 from tower import ugettext as _
 
-import swearwords
-
 
 # Simple email regex to keep people from submitting personal data.
 EMAIL_RE = re.compile(r'[^\s]+@[^\s]+\.[^\s]{2,6}')
@@ -29,21 +27,6 @@ PRIVATE_IP_RE = re.compile(
 
 # Simple "possibly a URL" regex
 URL_RE = re.compile(r'(://|www\.[^\s]|\.\w{2,}/)')
-
-
-def validate_swearwords(str):
-    """Soft swear word filter to encourage contructive feedback."""
-    matches = swearwords.find_swearwords(str)
-    if matches:
-        statsd.incr('swearing.total')
-        for match in matches:
-            statsd.incr('swearing.%s' % match)
-        # L10n: "Swear words" are cuss words/offensive words.
-        raise ValidationError(
-            _('Your comment contains swear words (%s). In order to help us '
-              'improve our products, please use words that help us create an '
-              'action or to-do from your constructive feedback. Thanks!') % (
-                ', '.join(matches)))
 
 
 def validate_no_html(str):

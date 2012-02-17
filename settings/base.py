@@ -133,7 +133,6 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'feedback',
     'myadmin',
     'search',
-    'swearwords',
     'themes',
     'website_issues',
 
