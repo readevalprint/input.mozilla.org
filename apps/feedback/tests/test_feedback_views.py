@@ -6,7 +6,7 @@ from nose.tools import eq_
 from pyquery import PyQuery as pq
 
 from input import FIREFOX, OPINION_PRAISE, OPINION_ISSUE
-from input.tests import ViewTestCase, enforce_ua
+from input.tests import ViewTestCase
 from input.urlresolvers import reverse
 from feedback.models import Opinion
 
@@ -22,52 +22,6 @@ class ViewTests(ViewTestCase):
         """Request beta feedback page."""
         extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
         return self.client.get(reverse('feedback'), **extra)
-
-    @enforce_ua
-    def test_no_ua(self):
-        """No UA: Redirect to beta download."""
-        r = self._get_page()
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(
-                reverse('feedback.download'))
-
-    @enforce_ua
-    def test_release(self):
-        version = (getattr(FIREFOX, 'default_version', None) or
-                    Version(LATEST_BETAS[FIREFOX]).simplified)
-        r = self._get_page(version)
-        eq_(r.status_code, 200)
-
-    @enforce_ua
-    def test_old_beta(self):
-        """Old beta: redirect."""
-        r = self._get_page('3.6b2')
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.download'))
-
-    @enforce_ua
-    def test_newer_beta(self):
-        """Beta version newer than current: no redirect."""
-        r = self._get_page('20.0b2')
-        eq_(r.status_code, 200)
-
-    @enforce_ua
-    def test_nightly(self):
-        """Nightly version: should be able to submit."""
-        r = self._get_page('20.0a1')
-        eq_(r.status_code, 200)
-        r = self._get_page('20.0a2')
-        eq_(r.status_code, 200)
-
-    @enforce_ua
-    def test_recent_version(self):
-        """Old beta: redirect."""
-        r = self._get_page('5.0')
-        eq_(r.status_code, 200)
-
-    def test_give_feedback(self):
-        r = self.client.post(reverse('feedback'))
-        eq_(r.content, 'User-Agent request header must be set.')
 
     def test_opinion_detail(self):
         r = self.client.get(reverse('opinion.detail', args=(29,)))

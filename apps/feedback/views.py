@@ -25,6 +25,8 @@ def enforce_ua(f):
 
     Can be disabled with settings.ENFORCE_USER_AGENT = False.
     """
+    raise DeprecationWarning('This function is no longer in use.')
+
     @wraps(f)
     def wrapped(request, *args, **kwargs):
         # Validate User-Agent request header.
@@ -55,10 +57,9 @@ def enforce_ua(f):
 
 
 @forward_mobile
-@enforce_ua
 @never_cache
 @anonymous_csrf_exempt
-def feedback(request, ua):
+def feedback(request):
     """Page to receive feedback under happy/sad/idea categories"""
 
     if request.method == 'POST':
@@ -72,6 +73,7 @@ def feedback(request, ua):
             form = IdeaForm(request.POST, auto_id='idea-%s')
 
         if form.is_valid():
+            ua = request.META.get('HTTP_USER_AGENT', None)
             request.session['previous_opinion'] = save_opinion_from_form(
                                                     request, typ, ua, form)
 

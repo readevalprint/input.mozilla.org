@@ -19,23 +19,21 @@ class ReleaseTests(ViewTestCase):
     def test_no_ua(self):
         """No UA: redirect."""
         r = self._get_page()
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.download'))
+        eq_(r.status_code, 200)
 
     @enforce_ua
     def test_beta(self):
         """Beta version on release page: redirect."""
         raise SkipTest
         r = self._get_page('3.6b2')
-        self.assertRedirects(r, reverse('feedback'), 302, 302)
+        eq_(r.status_code, 200)
 
     # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
     def notest_old_release(self):
         """Post Fx4: Old release: redirect to release download page."""
         r = self._get_page('3.5')
-        eq_(r.status_code, 302)
-        assert r['Location'].endswith(reverse('feedback.download'))
+        eq_(r.status_code, 200)
 
     # TODO bug 634324. Reenable this after Firefox 4 release.
     @enforce_ua
