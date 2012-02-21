@@ -22,8 +22,7 @@ KNOWN_DEVICES = (
 
 
 ## Opinion Type Length Restrictions
-MAX_FEEDBACK_LENGTH = 140
-MAX_IDEA_LENGTH = 250
+MAX_FEEDBACK_LENGTH = 250
 
 
 ## Opinion Types
@@ -45,7 +44,7 @@ class OPINION_IDEA:
     id = 3
     short = 'idea'
     pretty = _(u'Idea')
-    max_length = MAX_IDEA_LENGTH
+    max_length = MAX_FEEDBACK_LENGTH
 
 
 class OPINION_RATING:
@@ -69,6 +68,7 @@ op_types = {
 
 OPINION_TYPES_USAGE = OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA
 OPINION_TYPES = dict((type.id, type) for type in OPINION_TYPES_USAGE)
+
 
 ## Applications
 class FIREFOX:

@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import datetime
 
 from django.conf import settings
@@ -5,6 +7,7 @@ from django.conf import settings
 from nose.tools import eq_
 from pyquery import PyQuery as pq
 
+import input
 from input import FIREFOX, OPINION_PRAISE, OPINION_ISSUE
 from input.tests import ViewTestCase
 from input.urlresolvers import reverse
@@ -22,6 +25,10 @@ class ViewTests(ViewTestCase):
         """Request beta feedback page."""
         extra = dict(HTTP_USER_AGENT=self.FX_UA % ver) if ver else {}
         return self.client.get(reverse('feedback'), **extra)
+
+    def test_give_feedback(self):
+        r = self.client.post(reverse('feedback'))
+        eq_(r.status_code, 200)
 
     def test_opinion_detail(self):
         r = self.client.get(reverse('opinion.detail', args=(29,)))
@@ -65,6 +72,21 @@ class ViewTests(ViewTestCase):
         # Try submitting add_url=on with no URL. Bug 613549.
         submit_url(None)
 
+    def test_long_submission(self):
+        """Test that we can hit the limit of 250 for all opinion types."""
+        msg = ''.join(random.choice(string.letters) for x in xrange(249))
+
+        def req(optype):
+            return self.client.post(
+                reverse('feedback'),
+                dict(description=msg + str(optype.id), _type=optype.id),
+                HTTP_USER_AGENT=(self.FX_UA % '20.0b2'), follow=True)
+
+        for t in input.OPINION_TYPES_USAGE:
+            r = req(t)
+            eq_(r.status_code, 200)
+            assert r.content.find('Thanks for') >= 0
+
     def test_submissions_without_url(self):
         """Ensure feedback without URL can be submitted. Bug 610023."""
         req = lambda: self.client.post(
@@ -98,7 +120,6 @@ class ViewTests(ViewTestCase):
 
         with_site(settings.DESKTOP_SITE_ID)
         with_site(settings.MOBILE_SITE_ID)
-
 
     def test_submission_with_device_info(self):
         """Ensure mobile device info can be submitted."""
@@ -145,4 +166,3 @@ class ViewTests(ViewTestCase):
         doc = pq(r.content)
         eq_(doc('#thanks_download a').attr('href'),
             'http://www.mozilla.org/firefox/channel')
-

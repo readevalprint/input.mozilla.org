@@ -9,7 +9,7 @@ sys.path.append(SETTINGS_DIR)
 site.addsitedir(SETTINGS_DIR + '/vendor')
 from funfactory import manage
 manage.ROOT = SETTINGS_DIR
-import settings_local as settings
+import settings
 
 s = settings.DATABASES['default']
 MYSQL_PASS = s['PASSWORD']

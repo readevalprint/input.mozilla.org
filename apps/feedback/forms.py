@@ -10,9 +10,8 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 
 from input import OPINION_PRAISE, OPINION_ISSUE, OPINION_IDEA
 from feedback.models import Opinion
-from feedback.validators import (validate_swearwords, validate_no_html,
-                                 validate_no_email, validate_no_urls,
-                                 validate_no_private_ips,
+from feedback.validators import (validate_no_html, validate_no_email,
+                                 validate_no_urls, validate_no_private_ips,
                                  ExtendedURLValidator)
 
 
@@ -107,13 +106,12 @@ class PraiseForm(FeedbackForm):
             attrs={'data-max-length': OPINION_PRAISE.max_length}),
         label=_lazy('Please describe what you liked.'),
         max_length=OPINION_PRAISE.max_length,
-        validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls],
+        validators=[validate_no_html, validate_no_email, validate_no_urls],
         required=True
         )
     _type = forms.CharField(initial=OPINION_PRAISE.id,
-                           widget=forms.HiddenInput(),
-                           required=True)
+                            widget=forms.HiddenInput(),
+                            required=True)
 
 
 @autostrip
@@ -124,8 +122,7 @@ class IssueForm(FeedbackForm):
             attrs={'data-max-length': OPINION_ISSUE.max_length}),
         label=_lazy('Please describe your problem below.'),
         max_length=OPINION_ISSUE.max_length,
-        validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls],
+        validators=[validate_no_html, validate_no_email, validate_no_urls],
         required=True
         )
     _type = forms.CharField(initial=OPINION_ISSUE.id,
@@ -141,8 +138,7 @@ class IdeaForm(FeedbackForm):
             attrs={'data-max-length': OPINION_IDEA.max_length}),
         label=_lazy('Describe your idea below.'),
         max_length=OPINION_IDEA.max_length,
-        validators=[validate_swearwords, validate_no_html,
-                    validate_no_email, validate_no_urls],
+        validators=[validate_no_html, validate_no_email, validate_no_urls],
         required=True
         )
     _type = forms.CharField(initial=OPINION_IDEA.id,

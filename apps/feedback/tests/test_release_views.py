@@ -1,4 +1,3 @@
-from nose import SkipTest
 from nose.tools import eq_
 
 from input import FIREFOX, LATEST_RELEASE
@@ -16,36 +15,9 @@ class ReleaseTests(ViewTestCase):
         return self.client.get(reverse('feedback'), **extra)
 
     @enforce_ua
-    def test_no_ua(self):
+    def test_feedback(self):
         """No UA: redirect."""
         r = self._get_page()
-        eq_(r.status_code, 200)
-
-    @enforce_ua
-    def test_beta(self):
-        """Beta version on release page: redirect."""
-        raise SkipTest
-        r = self._get_page('3.6b2')
-        eq_(r.status_code, 200)
-
-    # TODO bug 634324. Reenable this after Firefox 4 release.
-    @enforce_ua
-    def notest_old_release(self):
-        """Post Fx4: Old release: redirect to release download page."""
-        r = self._get_page('3.5')
-        eq_(r.status_code, 200)
-
-    # TODO bug 634324. Reenable this after Firefox 4 release.
-    @enforce_ua
-    def notest_latest_release(self):
-        """Post Fx4: Latest release: no redirect."""
-        r = self._get_page(LATEST_RELEASE[FIREFOX])
-        eq_(r.status_code, 200)
-
-    @enforce_ua
-    def test_newer_release(self):
-        """Release version newer than current: no redirect."""
-        r = self._get_page('20.0')
         eq_(r.status_code, 200)
 
     def post_feedback(self, data, ajax=False, follow=True):
