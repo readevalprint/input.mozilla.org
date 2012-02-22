@@ -127,6 +127,7 @@ MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
 ]
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
+    'common',  # comes first so it always takes precedence.
     'input',  # comes first so it always takes precedence.
 
     'api',

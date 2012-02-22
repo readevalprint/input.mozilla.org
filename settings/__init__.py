@@ -1,6 +1,8 @@
-from .base import *
+from funfactory.settings_base import *
+from settings.initial import *
+from settings.default import *
+
 try:
-    from .local import *
-except ImportError, exc:
-    exc.args = tuple(['%s (did you rename settings/local.py-dist?)' % exc.args[0]])
-    raise exc
+    from settings.local import *
+except ImportError:
+    pass
