@@ -140,7 +140,7 @@ def save_opinion_from_form(request, type, ua, form):
 
     opinion = Opinion(
         _type=type,
-        url=form.cleaned_data.get('url', ''),
+        url=form.cleaned_data.get('url') or '',
         description=form.cleaned_data['description'],
         user_agent=ua, locale=locale,
         manufacturer=form.cleaned_data['manufacturer'],
