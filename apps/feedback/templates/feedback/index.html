@@ -15,7 +15,7 @@
       <h1>{{ _('Submit Your Feedback') }}</h1>
       <p>{{ _('Your feedback helps us improve Firefox.') }}</p>
     </header>
-    
+
     <section class="content">
       <ul id="feedback-types-beta">
         <li><a id="intro-happy" href="#happy"><span><strong></strong></span>{{ _('Firefox Made Me Happy') }}</a></li>
@@ -31,6 +31,12 @@
         with Firefox, please visit <a href="{{ support_url }}">Firefox Support</a>.
         {% endtrans %}
       </span>
+    </aside>
+    <aside>
+      {% trans %}
+      Drag this link to your bookmark bar to file more issues:
+      {% endtrans %}
+      {% include "common/bookmarklet.html" %}.
     </aside>
 
     <span class="fade"></span>

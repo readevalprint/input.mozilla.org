@@ -466,7 +466,7 @@ footer form option {
 
 
 #rate {
-    
+
 }
 #rate table {
     width: 100%;
@@ -776,4 +776,12 @@ html.js #sad-url {
 
 .errorlist {
     color: red;
+}
+
+/* Bookmarklet button */
+a.bookmarklet {
+    border-radius: 9px;
+    background: #999;
+    color: #333;
+    padding: 5px;
 }

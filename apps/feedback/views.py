@@ -60,6 +60,7 @@ def enforce_ua(f):
 @anonymous_csrf_exempt
 def feedback(request, ua):
     """Page to receive feedback under happy/sad/idea categories"""
+    initial = dict(url=request.REQUEST.get('url'))
 
     if request.method == 'POST':
         typ = int(request.POST.get('_type'))
@@ -77,16 +78,17 @@ def feedback(request, ua):
 
             url = reverse('thanks')
             return http.HttpResponseRedirect(url)
+
         else:
             forms = {'happy': (form if typ == input.OPINION_PRAISE.id else
-                               PraiseForm(auto_id='happy-%s')),
+                               PraiseForm(auto_id='happy-%s', initial=initial)),
                      'sad': (form if typ == input.OPINION_ISSUE.id else
-                             IssueForm(auto_id='sad-%s')),
+                             IssueForm(auto_id='sad-%s', initial=initial)),
                      'idea': (form if typ == input.OPINION_IDEA.id else
                               IdeaForm(auto_id='idea-%s'))}
     else:
-        forms = {'happy': PraiseForm(auto_id='happy-%s'),
-                 'sad': IssueForm(auto_id='sad-%s'),
+        forms = {'happy': PraiseForm(auto_id='happy-%s', initial=initial),
+                 'sad': IssueForm(auto_id='sad-%s', initial=initial),
                  'idea': IdeaForm(auto_id='idea-%s')}
 
     template = 'feedback/%sindex.html' % (
@@ -132,13 +134,6 @@ def opinion_detail(request, id):
 def save_opinion_from_form(request, type, ua, form):
     """Given a (valid) form and feedback type, save it to the DB."""
     locale = detect_language(request)
-
-    # Remove URL if checkbox disabled or no URL submitted. Broken Website
-    # report does not have the option to disable URL submission.
-    if (type != input.OPINION_BROKEN.id and
-        not (form.cleaned_data.get('add_url', False) and
-             form.cleaned_data.get('url'))):
-        form.cleaned_data['url'] = ''
 
     if type not in input.OPINION_TYPES:
         raise ValueError('Unknown type %s' % type)

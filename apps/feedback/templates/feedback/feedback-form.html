@@ -36,14 +36,6 @@
 
         {% if type != 'idea' %}
         <div>
-          <label for="{{ type }}-with-url">
-            <input id="{{ type }}-with-url" type="checkbox" name="add_url" />
-            {% if type == 'happy' %}
-              {{ _('Include the URL of a site that worked better.') }}
-            {% elif type == 'sad' %}
-              {{ _('Include the URL of the site with the problem.') }}
-            {% endif %}
-          </label>
           <p>{{ form.url }}</p>
           {{ form.url.errors }}
         </div>
